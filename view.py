@@ -1,19 +1,16 @@
-from logging import warning
-from mailbox import mbox
-from msilib.schema import Icon
 import os
 from tkinter import *
-import tkinter
 
 class View:
     
-    def __init__(self) -> None:
-        pass
+    def __init__(self, controller) -> None:
+        self.controller = controller
+        self.view_main()
 
     def logout(self):
         self.root.destroy()
 
-    def msg_erro_senha():
+    def msg_erro_senha(self):
         global msg_senha_tela
 
         msg_senha_tela = Toplevel(main_tela)
@@ -23,7 +20,7 @@ class View:
         Label(msg_senha_tela, text = "Erro na senha").pack()
         Button(msg_senha_tela, text = "Ok", command= msg_senha_tela.destroy).pack()
 
-    def msg_erro_usuario():
+    def msg_erro_usuario(self):
         global msg_usuario_tela
 
         msg_usuario_tela = Toplevel(main_tela)
@@ -33,7 +30,7 @@ class View:
         Label(msg_usuario_tela, text = "Erro na senha").pack()
         Button(msg_usuario_tela, text = "Ok", command= msg_usuario_tela.destroy).pack()
 
-    def view_gerenciamento():
+    def view_gerenciamento(self):
         gerenciamento_tela = Toplevel(main_tela)
         gerenciamento_tela.title("Info")
         gerenciamento_tela.geometry("400x400")
@@ -51,7 +48,7 @@ class View:
         Button(dashboard_tela, text = "Verificar gerenciamente de memória", command = self.view_gerenciamento).pack()
         Button(dashboard_tela, text = "Sair", command= dashboard_tela.destroy).pack()
 
-    def view_registrar():
+    def view_registrar(self):
         global registro_tela
         registro_tela = Toplevel(main_tela)
         registro_tela.title("Registrar")
@@ -73,9 +70,9 @@ class View:
         senha_entrada = Entry(registro_tela, textvariable = senha, show='*')
         senha_entrada.pack()
         Label(registro_tela, text = "").pack()
-        Button(registro_tela, text = "Registro", width = 10, height= 1, command = registrar_usuario).pack()
+        Button(registro_tela, text = "Registro", width = 10, height= 1, command = self.controller.registrar_usuario).pack()
 
-    def view_login():
+    def view_login(self):
         global login_tela
 
         login_tela = Toplevel(main_tela)
@@ -102,7 +99,7 @@ class View:
         input_senha.pack()
         print("Login efetuado com sucesso!")
         Label(login_tela, text= "").pack()
-        Button(login_tela, text = "Login", width= 10, height= 1, command= login_verificar).pack()  
+        Button(login_tela, text = "Login", width= 10, height= 1, command= self.controller.login_verificar).pack()  
 
     def view_main(self):
         global main_tela
