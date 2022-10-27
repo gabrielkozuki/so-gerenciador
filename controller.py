@@ -1,5 +1,6 @@
 from usuario import Usuario
 from view import View
+from tkinter import *
 
 class Controller:
 
@@ -7,8 +8,16 @@ class Controller:
         self.usuario = Usuario()
         self.view = View(self)
 
-    def registrar_usuario():
-        pass
+    def registrar_usuario(self, usuario, senha):
+        self.usuario.registrar_usuario(usuario, senha)
+        self.view.registrar_usuario_sucesso()
 
-    def login_verificar():
-        pass
+    def login_verificar(self):
+        res = self.usuario.login_verificar()
+
+        if res == 'dashboard':
+            self.view.view_dashboard()
+        elif res == 'err_user':
+            self.view.msg_erro_usuario()
+        elif res == 'err_pass':
+            self.view.msg_erro_senha()
