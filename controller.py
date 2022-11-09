@@ -7,6 +7,7 @@ class Controller:
     def __init__(self) -> None:
         self.usuario = Usuario()
         self.view = View(self)
+        self.view.mainloop()
 
     def registrar_usuario(self, usuario, senha):
         self.usuario.registrar_usuario(usuario, senha)

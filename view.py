@@ -1,6 +1,9 @@
 from functools import partial
 import os
+import re
 from tkinter import *
+from tkinter import ttk
+from bcp.pcb import ProcessTable
 
 class View:
     
@@ -35,19 +38,54 @@ class View:
     def view_gerenciamento(self):
         gerenciamento_tela = Toplevel(self.main_tela)
         gerenciamento_tela.title("Info")
-        gerenciamento_tela.geometry("400x400")
+        #gerenciamento_tela.geometry("400x400")
         # Running the aforementioned command and saving its output
-        output = os.popen('wmic process get description, processid').read()
-    
+        output = os.popen('wmic process get description, processid, Name, Priority, WorkingSetSize').read()
+        h_list = ["Description", "Name", "Priority", "ProcessId", "WorkingSetSize"]
         # Displaying the output
         print(output)
+        
+        self.lista_gerenciamento(gerenciamento_tela, h_list)
+        splitoutput = [s for s in output.strip().splitlines(True) if s.strip()]
+        splitoutput.pop(0)
+        for line in splitoutput:
+            word_list = re.split(r" {2,}", line)
+            self.load_processes_data(word_list)
+
     
+    def lista_gerenciamento(self, parent_w, h_list):
+
+        self.idd = 0
+        self.gtable_tree = ttk.Treeview(parent_w, show='headings')
+        self.gtable_tree['columns'] = (h_list)
+        
+        self.gtable_tree.column("#0", width=0, stretch=NO)
+        self.gtable_tree.heading("#0", text="", anchor=W)
+
+        for heading in h_list:
+            self.gtable_tree.column(heading, width=70, anchor=W)
+            self.gtable_tree.heading(heading, text=heading, anchor=W)
+
+        self.gtable_tree.pack(side="left", fill="both", expand=True)
+
+        verscrlbar = ttk.Scrollbar(parent_w, orient ="vertical", command = self.gtable_tree.yview)
+        verscrlbar.pack(side ='right', fill ='both')
+        self.gtable_tree.configure(yscrollcommand = verscrlbar.set)
+
+    def load_processes_data(self, line):
+        self.gtable_tree.insert(parent='', index='end', iid=self.idd, text="", values=tuple(line))
+        self.idd += 1
+
+    def view_simulador_processos(self):
+        self.simulador_tela = ProcessTable(self.main_tela)
+            
     def view_dashboard(self):
         dashboard_tela = Toplevel(self.main_tela)
         dashboard_tela.title("Dashboard")
         dashboard_tela.geometry("400x400")
         Label(dashboard_tela, text = "Bem-vindo ao dashboard").pack()
         Button(dashboard_tela, text = "Verificar gerenciamente de memória", command = self.view_gerenciamento).pack()
+        Button(dashboard_tela, text = "Simulador de processos", command = self.view_simulador_processos).pack()
         Button(dashboard_tela, text = "Sair", command= dashboard_tela.destroy).pack()
 
     def view_registrar(self):
@@ -100,3 +138,7 @@ class View:
         Button(text = "Login", height = "2", width="30", command = self.view_login).pack()
         Label(text = "").pack()
         Button(text = "Registre-se", height = "2", width = "30", command = self.view_registrar).pack()
+
+    
+    def mainloop(self):
+        self.main_tela.mainloop()
