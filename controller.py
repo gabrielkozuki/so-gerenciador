@@ -13,8 +13,8 @@ class Controller:
         self.usuario.registrar_usuario(usuario, senha)
         self.view.registrar_usuario_sucesso()
 
-    def login_verificar(self):
-        res = self.usuario.login_verificar()
+    def login_verificar(self, usuario, senha):
+        res = self.usuario.login_verificar(usuario=usuario, senha=senha)
 
         if res == 'dashboard':
             self.view.view_dashboard()
