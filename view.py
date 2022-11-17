@@ -3,7 +3,6 @@ import os
 import re
 from tkinter import *
 from tkinter import ttk
-from bcp.pcb import ProcessTable
 
 class View:
     
@@ -95,7 +94,7 @@ class View:
         self.login_tela = Toplevel(self.main_tela)
         self.login_tela.title("Login")
         self.login_tela.geometry("300x250")
-        Label(self.login_tela, text = 'Por favor, entre com as credenciais abaixo para logar').pack(pady=10)
+        Label(self.login_tela, text = 'Entre com as credenciais abaixo').pack(pady=10)
         
         usuario_verificar = StringVar()
         senha_verificar = StringVar()
@@ -106,7 +105,6 @@ class View:
         Label(self.login_tela, text = "Senha * ").pack()
         input_senha = Entry(self.login_tela, textvariable= senha_verificar, show='*')
         input_senha.pack()
-        print("Login efetuado com sucesso!")
         Label(self.login_tela, text= "").pack()
         Button(self.login_tela, text = "Login", width= 10, height= 1, command= lambda: self.controller.login_verificar(usuario_verificar.get(), senha_verificar.get())).pack()  
 

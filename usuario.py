@@ -37,13 +37,8 @@ class Usuario:
     def login_verificar(self, usuario, senha) -> str:
         json_data = self.load_data()
 
-        for i in json_data["users"]:
-            stored_usuario = json_data["users"][i]['usuario']
-            stored_senha = json_data["users"][i]['senha']
-
-            if stored_usuario == usuario and stored_senha:
+        for k, v in json_data["users"].items():
+            if v['usuario'] == usuario and v['senha'] == senha:
                 return 'dashboard'
-            elif stored_usuario != usuario:
-                return 'err_user'
-            else:
-                return 'err_pass'
+        
+        return 'err_login'

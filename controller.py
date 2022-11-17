@@ -24,7 +24,5 @@ class Controller:
         if res == 'dashboard':
             self.view.login_tela.destroy()
             self.view.view_dashboard()
-        elif res == 'err_user':
-            self.view.popupMensagem("Este usuário não está cadastrado no sistema.")
-        elif res == 'err_pass':
-            self.view.popupMensagem("Senha incorreta.")
+        elif res == 'err_login':
+            self.view.popupMensagem("Credenciais incorretas.")
