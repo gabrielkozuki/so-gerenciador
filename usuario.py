@@ -1,28 +1,49 @@
 from tkinter import *
 import os
+import json
 
 class Usuario:
 
     def __init__(self) -> None:
-        pass
+        json_data = self.load_data()
+        self.uid = json_data['key']
+
+    def load_data(self):
+        with open('data.json') as f:
+            return json.load(f)
+
+    def save_data(self, json_data):
+        with open('data.json', 'w') as f:
+            json.dump(json_data, f, indent=4)
 
     def registrar_usuario(self, usuario, senha):
-        print("usuario: " + usuario + str(type(usuario)))
-        file=open(usuario, "w")
-        file.write(usuario+ "\n")
-        file.write(senha)
-        file.close()
+        json_data = self.load_data()
+
+        for i in json_data["users"]:
+            stored_usuario = json_data["users"][i]['usuario']
+            if stored_usuario == usuario:
+                return 'err_user'
+
+        usuario = {
+            'usuario': usuario,
+            'senha': senha
+        }
+        
+        json_data["users"][self.uid] = usuario 
+        self.uid += 1
+        json_data["key"] = self.uid 
+        self.save_data(json_data)
 
     def login_verificar(self, usuario, senha) -> str:
-        lista_de_arquivos = os.listdir()
+        json_data = self.load_data()
 
-        if usuario in lista_de_arquivos:
-            arquivo = open(usuario, "r")
-            verificar = arquivo.read().splitlines()
+        for i in json_data["users"]:
+            stored_usuario = json_data["users"][i]['usuario']
+            stored_senha = json_data["users"][i]['senha']
 
-            if senha in verificar:
+            if stored_usuario == usuario and stored_senha:
                 return 'dashboard'
+            elif stored_usuario != usuario:
+                return 'err_user'
             else:
                 return 'err_pass'
-        else:
-            return 'err_user'

@@ -1,0 +1,13 @@
+{
+    "key": 1003,
+    "users": {
+        "1001": {
+            "usuario": "aa",
+            "senha": "aa"
+        },
+        "1002": {
+            "usuario": "bb",
+            "senha": "bb"
+        }
+    }
+}

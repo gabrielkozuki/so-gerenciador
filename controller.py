@@ -10,15 +10,21 @@ class Controller:
         self.view.mainloop()
 
     def registrar_usuario(self, usuario, senha):
-        self.usuario.registrar_usuario(usuario, senha)
-        self.view.registrar_usuario_sucesso()
+        msg = self.usuario.registrar_usuario(usuario, senha)
+        if msg == 'err_user':
+            self.view.popupMensagem("Este nome de usuário já existe.")
+        else:
+            self.view.usuario_entrada.delete(0, END)
+            self.view.senha_entrada.delete(0, END)
+            self.view.popupMensagem("Cadastro efetuado com sucesso.")
 
     def login_verificar(self, usuario, senha):
         res = self.usuario.login_verificar(usuario=usuario, senha=senha)
 
         if res == 'dashboard':
+            self.view.login_tela.destroy()
             self.view.view_dashboard()
         elif res == 'err_user':
-            self.view.msg_erro_usuario()
+            self.view.popupMensagem("Este usuário não está cadastrado no sistema.")
         elif res == 'err_pass':
-            self.view.msg_erro_senha()
+            self.view.popupMensagem("Senha incorreta.")
