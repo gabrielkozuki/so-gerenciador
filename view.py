@@ -3,6 +3,7 @@ import os
 import re
 from tkinter import *
 from tkinter import ttk
+from bcp.pcb import ProcessTable
 
 class View:
     
