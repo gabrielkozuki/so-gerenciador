@@ -7,6 +7,7 @@ class Usuario:
     def __init__(self) -> None:
         json_data = self.load_data()
         self.uid = json_data['key']
+        self.current_user = None
 
     def load_data(self):
         with open('data.json') as f:
@@ -39,6 +40,11 @@ class Usuario:
 
         for k, v in json_data["users"].items():
             if v['usuario'] == usuario and v['senha'] == senha:
+                self.current_user = k
                 return 'dashboard'
         
         return 'err_login'
+
+    def get_username(self):
+        json_data = self.load_data()
+        return json_data["users"][self.current_user]['usuario']
